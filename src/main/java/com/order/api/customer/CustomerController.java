@@ -1,8 +1,8 @@
-package com.order.api;
+package com.order.api.customer;
 
-import com.order.api.customerdto.CustomerDto;
-import com.order.api.customerdto.InitializeCostumerDto;
-import com.order.api.customerdto.CustomerMapper;
+import com.order.api.customer.customerdto.CustomerDto;
+import com.order.api.customer.customerdto.InitializeCostumerDto;
+import com.order.api.customer.customerdto.CustomerMapper;
 import com.order.domain.Customer;
 import com.order.services.CustomerService;
 import org.slf4j.Logger;
@@ -25,9 +25,9 @@ public class CustomerController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerDto createConsumerDto(@RequestBody InitializeCostumerDto createCostumerDto) {
+    public CustomerDto createConsumerDto(@RequestBody InitializeCostumerDto initializeCostumerDto) {
         logger.info("Costumer creation Request");
-        Customer costumer = costumerService.addCostumer(CustomerMapper.mapToCostumer(createCostumerDto));
+        Customer costumer = costumerService.addCostumer(CustomerMapper.mapToCostumer(initializeCostumerDto));
         return CustomerMapper.mapToCostumerDto(costumer);
     }
 }

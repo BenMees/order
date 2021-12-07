@@ -1,4 +1,4 @@
-package com.order.api.customerdto;
+package com.order.api.customer.customerdto;
 
 import com.order.domain.Customer;
 
