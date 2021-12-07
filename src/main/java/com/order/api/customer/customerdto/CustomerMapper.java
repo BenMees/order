@@ -1,9 +1,9 @@
 package com.order.api.customer.customerdto;
 
-import com.order.domain.Customer;
+import com.order.domain.users.Customer;
 
 public class CustomerMapper {
-    public static Customer mapToCostumer(InitializeCostumerDto initializeCostumerDto) {
+    public static Customer mapToCostumer(InitializeCustomerDto initializeCostumerDto) {
         return new Customer(initializeCostumerDto.firstName(), initializeCostumerDto.lastName(), initializeCostumerDto.emailAddress(), initializeCostumerDto.address(), initializeCostumerDto.phoneNumber());
     }
 

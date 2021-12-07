@@ -1,9 +1,9 @@
-package com.order.domain;
+package com.order.domain.users;
 
 import java.util.Objects;
 import java.util.UUID;
 
-public class Customer {
+public abstract class User {
     private final String uniqueId;
     private final String firstName;
     private final String lastName;
@@ -11,7 +11,7 @@ public class Customer {
     private final Address address;
     private final String phoneNumber;
 
-    public Customer(String firstName, String lastName, String emailAddress, Address address, String phoneNumber) {
+    public User(String firstName, String lastName, String emailAddress, Address address, String phoneNumber) {
         this.uniqueId = UUID.randomUUID().toString();
         this.firstName = Objects.requireNonNull(firstName);
         this.lastName = Objects.requireNonNull(lastName);
@@ -60,12 +60,13 @@ public class Customer {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Customer customer = (Customer) o;
-        return Objects.equals(uniqueId, customer.uniqueId);
+        User user = (User) o;
+        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(emailAddress, user.emailAddress) && Objects.equals(address, user.address) && Objects.equals(phoneNumber, user.phoneNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uniqueId);
+        return Objects.hash(firstName, lastName, emailAddress, address, phoneNumber);
     }
 }
+

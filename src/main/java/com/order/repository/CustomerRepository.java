@@ -1,8 +1,9 @@
 package com.order.repository;
 
-import com.order.domain.Customer;
+import com.order.domain.users.Customer;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -15,7 +16,7 @@ public class CustomerRepository {
         return costumers.get(costumer.getUniqueId());
     }
 
-    public Map<String, Customer> getCostumers() {
-        return costumers;
+    public List<Customer> getCostumers() {
+        return costumers.values().stream().toList();
     }
 }
