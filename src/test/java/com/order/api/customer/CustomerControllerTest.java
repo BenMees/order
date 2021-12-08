@@ -129,4 +129,51 @@ class CustomerControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.UNAUTHORIZED.value());
     }
+
+    @Test
+    void givenCorrectAdminAsksForViewingOneCustomers_giveCorrectCustomers() {
+        Address address = new Address("SesameStreet", "210", "3000", "Leuven");
+        Admin admin = new Admin("agent", "Smith", "AgentSmith@outlook.com", address, "04");
+        adminRepository.addAdmin(admin);
+        InitializeCustomerDto initializeCostumerDto = new InitializeCustomerDto("Neo", "Anderson", "NeoAnderson@outlook.com", address, "+1487565478");
+        Customer customer = CustomerMapper.mapToCostumer(initializeCostumerDto);
+        customerRepository.addCostumer(customer);
+
+        CustomerDto customerDto = RestAssured
+                .given()
+                .accept(JSON)
+                .contentType(JSON)
+                .header("Authorization", Utility.generateBase64Authorization(admin.getEmailAddress(), "admin"))
+                .when()
+                .port(port)
+                .get("/customers/" + customer.getUniqueId())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.ACCEPTED.value())
+                .extract()
+                .as(CustomerDto.class);
+
+        Assertions.assertThat(customerDto).isEqualTo(CustomerMapper.mapToCostumerDto(customer));
+    }
+
+    @Test
+    void givenNotAdminAsksForViewingOneCustomers_giveCorrectCustomers() {
+        Address address = new Address("SesameStreet", "210", "3000", "Leuven");
+        Admin admin = new Admin("agent", "Smith", "AgentSmith@outlook.com", address, "04");
+        adminRepository.addAdmin(admin);
+        InitializeCustomerDto initializeCostumerDto = new InitializeCustomerDto("Neo", "Anderson", "NeoAnderson@outlook.com", address, "+1487565478");
+        Customer customer = CustomerMapper.mapToCostumer(initializeCostumerDto);
+        customerRepository.addCostumer(customer);
+        RestAssured
+                .given()
+                .accept(JSON)
+                .contentType(JSON)
+                .header("Authorization", Utility.generateBase64Authorization(customer.getEmailAddress(), "admin"))
+                .when()
+                .port(port)
+                .get("/customers/" + customer.getUniqueId())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
+    }
 }
