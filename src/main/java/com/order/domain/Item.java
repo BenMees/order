@@ -8,7 +8,7 @@ public class Item {
     private final String name;
     private final String description;
     private final int amountInStock;
-    private double priceInEuro;
+    private final double priceInEuro;
 
     public Item(String name, String description, double priceInEuro, int amountInStock) {
         this.uniqueId = UUID.randomUUID().toString();

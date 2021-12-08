@@ -1,6 +1,5 @@
 package com.order.services.users;
 
-import com.order.api.customer.customerdto.CustomerDto;
 import com.order.domain.users.Customer;
 import com.order.exceptions.ObjectAlreadyExistException;
 import com.order.repository.users.CustomerRepository;

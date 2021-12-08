@@ -10,10 +10,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ItemRepository {
     private final Map<String, Item> items = new ConcurrentHashMap<>();
 
-    public Map<String, Item> getItems() {
-        return items;
-    }
-
     public Item addItem(Item item) {
         items.put(item.getUniqueId(), item);
         return items.get(item.getUniqueId());
