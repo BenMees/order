@@ -1,4 +1,4 @@
-package com.order.repository;
+package com.order.repository.users;
 
 import com.order.domain.users.Customer;
 import org.springframework.stereotype.Repository;
@@ -18,5 +18,9 @@ public class CustomerRepository {
 
     public List<Customer> getCostumers() {
         return costumers.values().stream().toList();
+    }
+
+    public Customer getCostumerById(String id) {
+        return costumers.get(id);
     }
 }

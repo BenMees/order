@@ -15,6 +15,7 @@ public class ItemRepository {
     }
 
     public Item addItem(Item item) {
-        return items.put(item.getUniqueId(), item);
+        items.put(item.getUniqueId(), item);
+        return items.get(item.getUniqueId());
     }
 }

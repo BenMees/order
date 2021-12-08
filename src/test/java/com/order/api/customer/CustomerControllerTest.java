@@ -1,10 +1,10 @@
-package com.order.api;
+package com.order.api.customer;
 
 import com.order.api.customer.customerdto.CustomerDto;
 import com.order.api.customer.customerdto.CustomerMapper;
 import com.order.api.customer.customerdto.InitializeCustomerDto;
 import com.order.domain.users.Address;
-import com.order.repository.CustomerRepository;
+import com.order.repository.users.CustomerRepository;
 import io.restassured.RestAssured;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -74,6 +74,7 @@ class CustomerControllerTest {
                 .statusCode(HttpStatus.BAD_REQUEST.value());
 
         System.out.println(customerRepository.getCostumers());
-
     }
+
+
 }

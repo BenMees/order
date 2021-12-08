@@ -1,5 +1,6 @@
 package com.order.domain.users;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -10,8 +11,10 @@ public abstract class User {
     private final String emailAddress;
     private final Address address;
     private final String phoneNumber;
+    private final List<Feature> features;
 
-    public User(String firstName, String lastName, String emailAddress, Address address, String phoneNumber) {
+    public User(String firstName, String lastName, String emailAddress, Address address, String phoneNumber, List<Feature> features) {
+        this.features = features;
         this.uniqueId = UUID.randomUUID().toString();
         this.firstName = Objects.requireNonNull(firstName);
         this.lastName = Objects.requireNonNull(lastName);
@@ -42,6 +45,10 @@ public abstract class User {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public boolean isAble(Feature feature) {
+        return features.contains(feature);
     }
 
     @Override
