@@ -56,6 +56,9 @@ class ItemControllerTest {
                         .as(ItemDto.class);
         System.out.println(itemDto);
         Assertions.assertThat(itemDto.name()).isEqualTo(initializerItemDto.name());
+        Assertions.assertThat(itemDto.amountInStock()).isEqualTo(initializerItemDto.amountInStock());
+        Assertions.assertThat(itemDto.description()).isEqualTo(initializerItemDto.description());
+        Assertions.assertThat(itemDto.priceInEuro()).isEqualTo(initializerItemDto.priceInEuro());
     }
 
     @Test

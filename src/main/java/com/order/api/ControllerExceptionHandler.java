@@ -15,26 +15,26 @@ import java.io.IOException;
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NullPointerException.class)
     protected void setNullPointerException(NullPointerException nullPointerException, HttpServletResponse response) throws IOException {
-        logAndSendError(nullPointerException, response);
+        logAndSendError(nullPointerException, response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ObjectAlreadyExistException.class)
     protected void setObjectAlreadyExistException(ObjectAlreadyExistException objectAlreadyExistException, HttpServletResponse response) throws IOException {
-        logAndSendError(objectAlreadyExistException, response);
+        logAndSendError(objectAlreadyExistException, response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ObjectDoesNotExist.class)
     protected void setObjectDoesNotExist(ObjectDoesNotExist objectDoesNotExist, HttpServletResponse response) throws IOException {
-        logAndSendError(objectDoesNotExist, response);
+        logAndSendError(objectDoesNotExist, response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UnauthorizedException.class)
     protected void setUnauthorizedException(UnauthorizedException unauthorizedException, HttpServletResponse response) throws IOException {
-        logAndSendError(unauthorizedException, response);
+        logAndSendError(unauthorizedException, response, HttpStatus.UNAUTHORIZED);
     }
 
-    private void logAndSendError(Exception emailException, HttpServletResponse response) throws IOException {
-        response.sendError(HttpStatus.BAD_REQUEST.value(), emailException.getMessage());
+    private void logAndSendError(Exception emailException, HttpServletResponse response, HttpStatus ErrorCode) throws IOException {
+        response.sendError(ErrorCode.value(), emailException.getMessage());
         logger.error(emailException.getMessage(), emailException);
     }
 }
