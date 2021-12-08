@@ -14,4 +14,8 @@ public class ItemRepository {
         items.put(item.getUniqueId(), item);
         return items.get(item.getUniqueId());
     }
+
+    public Item getItemById(String id) {
+        return items.get(id);
+    }
 }

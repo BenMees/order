@@ -1,6 +1,6 @@
 package com.order.domain.users;
 
 public enum Feature {
-    ADD_ITEM,
+    ITEM_CONTROL,
     SEE_CUSTOMERS
 }

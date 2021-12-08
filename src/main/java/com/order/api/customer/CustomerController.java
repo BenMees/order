@@ -41,6 +41,7 @@ public class CustomerController {
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public List<CustomerDto> getCustomers(@RequestHeader String authorization) {
+        LOGGER.info("Costumers list requested");
         securityService.validate(authorization, Feature.SEE_CUSTOMERS);
         return customerService.getCustomers().stream()
                 .map(CustomerMapper::mapToCostumerDto)
@@ -50,6 +51,7 @@ public class CustomerController {
     @GetMapping(path = "/{id}",produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public CustomerDto getCustomer(@PathVariable String id, @RequestHeader String authorization) {
+        LOGGER.info("costumer " + id + " requested");
         securityService.validate(authorization, Feature.SEE_CUSTOMERS);
         return CustomerMapper.mapToCostumerDto(customerService.getCustomerById(id));
     }

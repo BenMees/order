@@ -31,8 +31,17 @@ public class ItemController {
     @ResponseStatus(HttpStatus.CREATED)
     public ItemDto createItem(@RequestBody InitializerItemDto initializerItemDto, @RequestHeader String authorization) {
         logger.info("Item creation Request");
-        securityService.validate(authorization, Feature.ADD_ITEM);
+        securityService.validate(authorization, Feature.ITEM_CONTROL);
         Item item = itemService.addItem(ItemMapper.mapToItem(initializerItemDto));
+        return ItemMapper.mapToItemDto(item);
+    }
+
+    @PostMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ItemDto updateItem(@PathVariable String id, @RequestBody InitializerItemDto initializerItemDto, @RequestHeader String authorization) {
+        logger.info("Item " + id + " update Request");
+        securityService.validate(authorization, Feature.ITEM_CONTROL);
+        Item item = itemService.updateItem(id, ItemMapper.mapToItem(initializerItemDto));
         return ItemMapper.mapToItemDto(item);
     }
 }
