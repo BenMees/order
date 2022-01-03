@@ -4,11 +4,11 @@ import com.order.Utility;
 import com.order.api.item.itemdto.InitializerItemDto;
 import com.order.api.item.itemdto.ItemDto;
 import com.order.api.item.itemdto.ItemMapper;
-import com.order.domain.Item;
+import com.order.domain.item.Item;
 import com.order.domain.users.Address;
 import com.order.domain.users.Admin;
 import com.order.domain.users.Customer;
-import com.order.repository.ItemRepository;
+import com.order.repository.item.ItemRepository;
 import com.order.repository.users.AdminRepository;
 import io.restassured.RestAssured;
 import org.assertj.core.api.Assertions;
@@ -41,7 +41,7 @@ class ItemControllerTest {
     void givenCorrectItemAndAdmin_ItemStored() {
         Address address = new Address("SesameStreet", "210", "3000", "Leuven");
         Admin admin = new Admin("Admin", "Admin", "admin@outlook.com", address, "04");
-        InitializerItemDto initializerItemDto = new InitializerItemDto("Bal", "round", 24.5, 4);
+        InitializerItemDto initializerItemDto = new InitializerItemDto("BalAdd", "round", 24.5, 4);
         adminRepository.addAdmin(admin);
 
         ItemDto itemDto =
@@ -64,6 +64,29 @@ class ItemControllerTest {
         Assertions.assertThat(itemDto.amountInStock()).isEqualTo(initializerItemDto.amountInStock());
         Assertions.assertThat(itemDto.description()).isEqualTo(initializerItemDto.description());
         Assertions.assertThat(itemDto.priceInEuro()).isEqualTo(initializerItemDto.priceInEuro());
+    }
+
+    @Test
+    void addingTwoTimesItemWithSameName_givesBadRequest() {
+        Address address = new Address("SesameStreet", "210", "3000", "Leuven");
+        Admin admin = new Admin("Admin", "Admin", "admin@outlook.com", address, "04");
+        InitializerItemDto initializerItemDto = new InitializerItemDto("duplicateBal", "round", 24.5, 4);
+        itemRepository.addItem(ItemMapper.mapToItem(initializerItemDto));
+        adminRepository.addAdmin(admin);
+
+        RestAssured
+                .given()
+                .body(initializerItemDto)
+                .accept(JSON)
+                .contentType(JSON)
+                .header("Authorization", Utility.generateBase64Authorization(admin.getEmailAddress(), "admin"))
+                .when()
+                .port(port)
+                .post("/items")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+
     }
 
     @Test
@@ -90,10 +113,10 @@ class ItemControllerTest {
     void givenCorrectItemToUpdateAndNotInAdminRepository_UnauthorizedException() {
         Address address = new Address("SesameStreet", "210", "3000", "Leuven");
         Customer customer = new Customer("Admin", "Admin", "User@outlook.com", address, "04");
-        InitializerItemDto initializerItemDto = new InitializerItemDto("Bal", "round", 24.5, 4);
+        InitializerItemDto initializerItemDto = new InitializerItemDto("BalUpdate", "round", 24.5, 4);
         Item item = ItemMapper.mapToItem(initializerItemDto);
         itemRepository.addItem(item);
-        InitializerItemDto initializerItemDtoUpdated = new InitializerItemDto("Bal", "square", 50, 3);
+        InitializerItemDto initializerItemDtoUpdated = new InitializerItemDto("BalUpdate", "square", 50, 3);
 
         RestAssured
                 .given()
@@ -103,7 +126,7 @@ class ItemControllerTest {
                 .header("Authorization", Utility.generateBase64Authorization(customer.getEmailAddress(), "admin"))
                 .when()
                 .port(port)
-                .post("/items/" + item.getUniqueId())
+                .put("/items/" + item.getUniqueId())
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
@@ -113,10 +136,10 @@ class ItemControllerTest {
     void givenCorrectItemToUpdateAndAdminInAdminRepository_UnauthorizedException() {
         Address address = new Address("SesameStreet", "210", "3000", "Leuven");
         Admin admin = new Admin("updateItemAdmin", "Admin", "updateItemAdmin@outlook.com", address, "04");
-        InitializerItemDto initializerItemDto = new InitializerItemDto("Bal", "round", 24.5, 4);
+        InitializerItemDto initializerItemDto = new InitializerItemDto("BalUpdate", "round", 24.5, 4);
         Item item = ItemMapper.mapToItem(initializerItemDto);
         itemRepository.addItem(item);
-        InitializerItemDto initializerItemDtoUpdated = new InitializerItemDto("Bal", "square", 50, 3);
+        InitializerItemDto initializerItemDtoUpdated = new InitializerItemDto("BalUpdate", "square", 50, 3);
         adminRepository.addAdmin(admin);
 
         ItemDto itemDto =
@@ -128,7 +151,7 @@ class ItemControllerTest {
                         .header("Authorization", Utility.generateBase64Authorization(admin.getEmailAddress(), "admin"))
                         .when()
                         .port(port)
-                        .post("/items/" + item.getUniqueId())
+                        .put("/items/" + item.getUniqueId())
                         .then()
                         .assertThat()
                         .statusCode(HttpStatus.ACCEPTED.value())

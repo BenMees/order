@@ -29,12 +29,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(UnauthorizedException.class)
-    protected void setUnauthorizedException(UnauthorizedException unauthorizedException, HttpServletResponse response) throws IOException {
+    protected void unauthorizedException(UnauthorizedException unauthorizedException, HttpServletResponse response) throws IOException {
         logAndSendError(unauthorizedException, response, HttpStatus.UNAUTHORIZED);
     }
 
-    private void logAndSendError(Exception emailException, HttpServletResponse response, HttpStatus ErrorCode) throws IOException {
-        response.sendError(ErrorCode.value(), emailException.getMessage());
-        logger.error(emailException.getMessage(), emailException);
+    private void logAndSendError(Exception exception, HttpServletResponse response, HttpStatus ErrorCode) throws IOException {
+        response.sendError(ErrorCode.value(), exception.getMessage());
+        logger.error(exception.getMessage());
     }
 }

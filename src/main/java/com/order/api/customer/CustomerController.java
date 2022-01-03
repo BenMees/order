@@ -21,7 +21,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(path = "/customers")
 public class CustomerController {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger((CustomerController.class));
+    private final Logger logger = LoggerFactory.getLogger((CustomerController.class));
     private final CustomerService customerService;
     private final SecurityService securityService;
 
@@ -33,7 +33,7 @@ public class CustomerController {
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerDto createCustomer(@RequestBody InitializeCustomerDto initializeCostumerDto) {
-        LOGGER.info("Costumer creation Request");
+        logger.info("Costumer creation Request");
         Customer costumer = customerService.addCustomer(CustomerMapper.mapToCostumer(initializeCostumerDto));
         return CustomerMapper.mapToCostumerDto(costumer);
     }
@@ -41,7 +41,7 @@ public class CustomerController {
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public List<CustomerDto> getCustomers(@RequestHeader String authorization) {
-        LOGGER.info("Costumers list requested");
+        logger.info("Costumers list requested");
         securityService.validate(authorization, Feature.SEE_CUSTOMERS);
         return customerService.getCustomers().stream()
                 .map(CustomerMapper::mapToCostumerDto)
@@ -51,7 +51,7 @@ public class CustomerController {
     @GetMapping(path = "/{id}",produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public CustomerDto getCustomer(@PathVariable String id, @RequestHeader String authorization) {
-        LOGGER.info("costumer " + id + " requested");
+        logger.info("costumer " + id + " requested");
         securityService.validate(authorization, Feature.SEE_CUSTOMERS);
         return CustomerMapper.mapToCostumerDto(customerService.getCustomerById(id));
     }

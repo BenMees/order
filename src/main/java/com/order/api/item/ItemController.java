@@ -3,14 +3,15 @@ package com.order.api.item;
 import com.order.api.item.itemdto.InitializerItemDto;
 import com.order.api.item.itemdto.ItemDto;
 import com.order.api.item.itemdto.ItemMapper;
-import com.order.domain.Item;
+import com.order.domain.item.Item;
 import com.order.domain.users.Feature;
-import com.order.services.ItemService;
+import com.order.services.item.ItemService;
 import com.order.services.users.security.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -36,7 +37,7 @@ public class ItemController {
         return ItemMapper.mapToItemDto(item);
     }
 
-    @PostMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ItemDto updateItem(@PathVariable String id, @RequestBody InitializerItemDto initializerItemDto, @RequestHeader String authorization) {
         logger.info("Item " + id + " update Request");

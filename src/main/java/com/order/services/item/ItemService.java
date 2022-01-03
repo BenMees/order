@@ -1,8 +1,11 @@
-package com.order.services;
+package com.order.services.item;
 
-import com.order.domain.Item;
-import com.order.repository.ItemRepository;
+import com.order.domain.item.Item;
+import com.order.exceptions.ObjectAlreadyExistException;
+import com.order.repository.item.ItemRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ItemService {
@@ -13,6 +16,9 @@ public class ItemService {
     }
 
     public Item addItem(Item item) {
+        if (getItems().contains(item)) {
+            throw new ObjectAlreadyExistException("Item with name " + item.getName());
+        }
         return itemRepository.addItem(item);
     }
 
@@ -27,5 +33,9 @@ public class ItemService {
         item.setAmountInStock(updateItem.getAmountInStock());
         item.setPriceInEuro(updateItem.getPriceInEuro());
         return item;
+    }
+
+    public List<Item> getItems() {
+        return itemRepository.getItems();
     }
 }

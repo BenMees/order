@@ -1,6 +1,6 @@
 package com.order.api.item.itemdto;
 
-import com.order.domain.Item;
+import com.order.domain.item.Item;
 
 public class ItemMapper {
     public static Item mapToItem(InitializerItemDto initializerItemDto) {

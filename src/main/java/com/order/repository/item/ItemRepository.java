@@ -1,8 +1,9 @@
-package com.order.repository;
+package com.order.repository.item;
 
-import com.order.domain.Item;
+import com.order.domain.item.Item;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,5 +18,9 @@ public class ItemRepository {
 
     public Item getItemById(String id) {
         return items.get(id);
+    }
+
+    public List<Item> getItems() {
+        return items.values().stream().toList();
     }
 }

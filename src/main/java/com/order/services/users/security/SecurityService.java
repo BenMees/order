@@ -18,13 +18,17 @@ public class SecurityService {
     }
 
     public void validate(String authorization, Feature feature) {
-        String decodeUserEmail = new String(Base64.getDecoder().decode(authorization.substring("Basic ".length())));
-        String email = decodeUserEmail.substring(0, decodeUserEmail.indexOf(":"));
+        String email = decodeAuthorization(authorization);
 
         User user = userService.getUserByEmail(email);
         if (!user.isAble(feature)){
             throw new UnauthorizedException(user.getEmailAddress(),feature.name());
         }
+    }
+
+    public String decodeAuthorization(String authorization) {
+        String decodeUserEmail = new String(Base64.getDecoder().decode(authorization.substring("Basic ".length())));
+        return decodeUserEmail.substring(0, decodeUserEmail.indexOf(":"));
     }
 
 }

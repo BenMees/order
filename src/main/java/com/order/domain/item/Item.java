@@ -1,22 +1,29 @@
-package com.order.domain;
+package com.order.domain.item;
 
 import java.util.Objects;
 import java.util.UUID;
 
 public class Item {
     private final String uniqueId;
-
     private String name;
-
     private String description;
     private int amountInStock;
     private double priceInEuro;
+
     public Item(String name, String description, double priceInEuro, int amountInStock) {
         this.uniqueId = UUID.randomUUID().toString();
         this.name = Objects.requireNonNull(name);
         this.description = Objects.requireNonNull(description);
         this.priceInEuro = priceInEuro;
         this.amountInStock = amountInStock;
+    }
+
+    public Item(Item itemToClone) {
+        this.uniqueId = itemToClone.getUniqueId();
+        this.description = itemToClone.getDescription();
+        this.amountInStock = itemToClone.getAmountInStock();
+        this.name = itemToClone.getName();
+        this.priceInEuro = itemToClone.getPriceInEuro();
     }
 
     public String getUniqueId() {
