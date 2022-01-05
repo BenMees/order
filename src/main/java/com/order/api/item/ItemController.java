@@ -5,7 +5,7 @@ import com.order.api.item.itemdto.ItemDto;
 import com.order.api.item.itemdto.ItemMapper;
 import com.order.domain.item.Item;
 import com.order.domain.users.Feature;
-import com.order.services.item.ItemService;
+import com.order.services.item.ItemServiceDb;
 import com.order.services.users.security.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +19,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(path = "/items")
 public class ItemController {
 
-    private final ItemService itemService;
+    private final ItemServiceDb itemServiceDb;
     private final SecurityService securityService;
     private final Logger logger = LoggerFactory.getLogger((com.order.api.item.ItemController.class));
 
-    public ItemController(ItemService itemService, SecurityService securityService) {
-        this.itemService = itemService;
+    public ItemController(ItemServiceDb itemService, SecurityService securityService) {
+        this.itemServiceDb = itemService;
         this.securityService = securityService;
     }
 
@@ -33,7 +33,7 @@ public class ItemController {
     public ItemDto createItem(@RequestBody InitializerItemDto initializerItemDto, @RequestHeader String authorization) {
         logger.info("Item creation Request");
         securityService.validate(authorization, Feature.ITEM_CONTROL);
-        Item item = itemService.addItem(ItemMapper.mapToItem(initializerItemDto));
+        Item item = itemServiceDb.addItem(ItemMapper.mapToItem(initializerItemDto));
         return ItemMapper.mapToItemDto(item);
     }
 
@@ -42,7 +42,7 @@ public class ItemController {
     public ItemDto updateItem(@PathVariable String id, @RequestBody InitializerItemDto initializerItemDto, @RequestHeader String authorization) {
         logger.info("Item " + id + " update Request");
         securityService.validate(authorization, Feature.ITEM_CONTROL);
-        Item item = itemService.updateItem(id, ItemMapper.mapToItem(initializerItemDto));
+        Item item = itemServiceDb.updateItem(id, ItemMapper.mapToItem(initializerItemDto));
         return ItemMapper.mapToItemDto(item);
     }
 }

@@ -1,13 +1,25 @@
 package com.order.domain.item;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name = "items")
 public class Item {
-    private final String uniqueId;
+
+    @Id
+    @Column(name = "uniqueid")
+    private String uniqueId;
+    @Column(name = "name")
     private String name;
+    @Column(name = "description")
     private String description;
+    @Column(name = "amountinstock")
     private int amountInStock;
+    @Column(name = "priceineuro")
     private double priceInEuro;
 
     public Item(String name, String description, double priceInEuro, int amountInStock) {
@@ -24,6 +36,10 @@ public class Item {
         this.amountInStock = itemToClone.getAmountInStock();
         this.name = itemToClone.getName();
         this.priceInEuro = itemToClone.getPriceInEuro();
+    }
+
+    public Item() {
+
     }
 
     public String getUniqueId() {

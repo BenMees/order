@@ -1,6 +1,5 @@
 package com.order.domain.users;
 
-import java.util.Collections;
 import java.util.List;
 
 public class Customer extends User{

@@ -6,6 +6,7 @@ import com.order.api.customer.customerdto.CustomerMapper;
 import com.order.domain.users.Customer;
 import com.order.domain.users.Feature;
 import com.order.services.users.CustomerService;
+//import com.order.services.users.CustomerServiceDb;
 import com.order.services.users.security.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +23,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CustomerController {
 
     private final Logger logger = LoggerFactory.getLogger((CustomerController.class));
-    private final CustomerService customerService;
+    private final CustomerService customerServiceDb;
     private final SecurityService securityService;
 
-    public CustomerController(CustomerService costumerService, SecurityService securityService) {
-        this.customerService = costumerService;
+    public CustomerController(CustomerService customerServiceDb, SecurityService securityService) {
+        this.customerServiceDb = customerServiceDb;
         this.securityService = securityService;
     }
 
@@ -34,7 +35,7 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerDto createCustomer(@RequestBody InitializeCustomerDto initializeCostumerDto) {
         logger.info("Costumer creation Request");
-        Customer costumer = customerService.addCustomer(CustomerMapper.mapToCostumer(initializeCostumerDto));
+        Customer costumer = customerServiceDb.addCustomer(CustomerMapper.mapToCostumer(initializeCostumerDto));
         return CustomerMapper.mapToCostumerDto(costumer);
     }
 
@@ -43,7 +44,7 @@ public class CustomerController {
     public List<CustomerDto> getCustomers(@RequestHeader String authorization) {
         logger.info("Costumers list requested");
         securityService.validate(authorization, Feature.SEE_CUSTOMERS);
-        return customerService.getCustomers().stream()
+        return customerServiceDb.getCustomers().stream()
                 .map(CustomerMapper::mapToCostumerDto)
                 .collect(Collectors.toList());
     }
@@ -53,6 +54,6 @@ public class CustomerController {
     public CustomerDto getCustomer(@PathVariable String id, @RequestHeader String authorization) {
         logger.info("costumer " + id + " requested");
         securityService.validate(authorization, Feature.SEE_CUSTOMERS);
-        return CustomerMapper.mapToCostumerDto(customerService.getCustomerById(id));
+        return CustomerMapper.mapToCostumerDto(customerServiceDb.getCustomerById(id));
     }
 }
